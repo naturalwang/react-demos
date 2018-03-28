@@ -1,8 +1,8 @@
 var http = require('http'),
-    browserify = require('browserify'),
-    literalify = require('literalify'),
-    React = require('react'),
-    ReactDOMServer = require('react-dom/server');
+var browserify = require('browserify'),
+var literalify = require('literalify'),
+var React = require('react'),
+var ReactDOMServer = require('react-dom/server');
 
 var App = require('./app');
 
@@ -49,4 +49,3 @@ http.createServer(function(req, res) {
   if (err) throw err;
   console.log('Listening on 3000...');
 })
-

@@ -2,23 +2,36 @@
 <html>
   <head>
     <script src="../build/react.js"></script>
+    <!-- 最常用的是 ReactDOM.render 方法, 将 jsx 转化为 html 并渲染 -->
     <script src="../build/react-dom.js"></script>
     <script src="../build/browser.min.js"></script>
   </head>
   <body>
     <div id="example"></div>
     <script type="text/babel">
+// 创建组件类, 在新版本中课通过 Class 关键字来创建
+// 首字母必须大写
 var LikeButton = React.createClass({
+  // this.state 相当于组件类内部的全局变量(状态机都是全局变量)
+  // 该方法会初始化 this.state, 在组件被挂载之前执行
+
   getInitialState: function() {
     return {liked: false};
   },
   handleClick: function(event) {
+    // 可以通过 this.setState 更新 this.state,
+    // 每次更新后, 都会触发 this.render 方法重新渲染组件
+    // this.props 用来存储预先定义的数据
+    // this.state 用来存储通过用户交互而改变的数据
     this.setState({liked: !this.state.liked});
   },
+  // 每个组件类都需要有一个 render 方法, 用于输出该类的实例
   render: function() {
     var text = this.state.liked ? 'like' : 'haven\'t liked';
     return (
+      // on + 事件名, 监听对应事件
       <p onClick={this.handleClick}>
+        // 花括号包裹的是变量
         You {text} this. Click to toggle.
       </p>
     );
@@ -32,4 +45,3 @@ ReactDOM.render(
     </script>
   </body>
 </html>
-

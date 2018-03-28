@@ -8,11 +8,27 @@
   <body>
     <div id="example"></div>
     <script type="text/babel">
+      // createClass 方法生成一个组件类
+      // 组件类的首字母必须大写
       var NotesList = React.createClass({
+        // 每个组件类都需要一个 render 方法输出组件实例
         render: function() {
           return (
+            // 最外层只能有一个标签
+            // 标签与 html 的标签大致相同,
+            // 除了 class 变成 className, for 变成 htmlFor
             <ol>
               {
+                // this.props 对象的属性与组件的属性一一对应, 除了 this.props.children
+                // this.props.children 得到当前 component 的所有的子节点
+                // 1. 没有 children 时为 undefined
+                // 2. 有一个时为 object
+                // 3. 有多个时为 array
+                // 真是垃圾设计
+                // 需要使用 React.Children 来无痛处理 children, 不用管类型
+                // React.Children.map 可以无痛迭代, 不用管类型
+                // 垃圾设计需要垃圾补丁...
+                //
                 React.Children.map(this.props.children, function (child) {
                   return <li>{child}</li>;
                 })
@@ -21,8 +37,9 @@
           );
         }
       });
-
+      // 将 jsx 转化为 html 并渲染
       ReactDOM.render(
+        // 使用组件, 即生成一个组件的实例
         <NotesList>
           <span>hello</span>
           <span>world</span>
@@ -32,4 +49,3 @@
     </script>
   </body>
 </html>
-

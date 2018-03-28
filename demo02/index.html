@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- react 的核心功能 TODO: 详细了解 -->
     <script src="../build/react.js"></script>
+    <!-- 提供 DOM 相关的功能 TODO: 详细了解 -->
     <script src="../build/react-dom.js"></script>
+    <!-- babel 的浏览器版本, 将 JSX 转化为 html, 这一步很耗时 -->
     <script src="../build/browser.min.js"></script>
   </head>
   <body>
     <div id="example"></div>
+    <!-- type="text/babel" 指明是 JSX 语法 -->
     <script type="text/babel">
       var names = ['Alice', 'Emily', 'Kate'];
-
+      // 将 jsx 模板转化为 html, 并插入指定的 DOM 节点
       ReactDOM.render(
+        // babel 编译器
+        // 遇到 < 就按 html 的语法解析
         <div>
+        // 遇到 { 就按 js 的语法解析
         {
+          // map 会生成一个新的数组, 依次调用数组中的每一个元素
+          // 有三个参数, currentValue, index 和 array(map 方法中被调用的数组)
           names.map(function (name, index) {
+            // FIXME: key 作为标志符, 用于 react
             return <div key={index}>Hello, {name}!</div>
           })
         }

@@ -1,20 +1,42 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!--
+    react 的核心功能库
+    React.Component
+    React.PureComponent
+    React.createClass
+    React.createElement
+    -->
     <script src="../build/react.js"></script>
     <script src="../build/react-dom.js"></script>
     <script src="../build/browser.min.js"></script>
   </head>
   <body>
     <div id="example"></div>
+    <!--
+    this.state
+        描述组件的状态,
+        随着和用户的交互而变化
+    this.props
+        描述组件的属性,
+        不可变
+    -->
     <script type="text/babel">
+      // 表单类 指 input, textarea, option 标签
+      // 对这类标签使用 onChange 事件监听
+      // 这类标签传入的值不能通过 this.props 读取, 因为属于与用户交互的内容
+      // 通过 event.target 读取
       var Input = React.createClass({
+        // 初始化 this.state, 在 mount 之前执行
         getInitialState: function() {
           return {value: 'Hello!'};
         },
         handleChange: function(event) {
+          // 更新 this.state, state 的改变会触发 this.render 重新渲染
           this.setState({value: event.target.value});
         },
+        // 输出该组件的实例
         render: function () {
           var value = this.state.value;
           return (

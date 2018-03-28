@@ -1,27 +1,102 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!--
+    提供 react 的核心功能,
+    React.Component 为创建 react 组件类的基类
+
+    React.PureComponent, 会在某些情况下执行 shouldComponentUpdate() 方法, 此外和 React.Component 没有区别
+
+    React.createElement(
+      type,
+      [props],
+      [...children]
+    )
+    创建一个新的 reactElement 对象
+    type 是标签的类型
+    该方法会被 JSX 语法糖包装起来, 并不会直接使用
+
+    React.cloneElement(
+      element,
+      [props],
+      [...children]
+    )
+    浅拷贝一个 reactElement, 会有相同的引用
+
+    React.createFactory(type)
+    生成一个指定类型的 reactElement, 会被 JSX 语法糖包装起来, 不应该直接使用
+
+    React.isValidElement(object)
+    判断对象是否是一个 reactElement
+
+    React.Children
+    解决垃圾设计的垃圾补丁, 为了处理 this.props.children 的不一致结构
+    - React.Children.map(children, function[(thisArg)])
+        生成一个经过 map 操作后的新数组
+    - React.Children.forEach(children, function[(thisArg)])
+        只对每个元素进行操作, 不返回新数组
+    - React.Children.count(children)
+        返回 children 的个数
+    - React.Children.only(children)
+        确保只有一个 child 并返回, 不是一个的话就报错
+    - React.Children.toArray(children)
+        将 children 转化为一个 flatten Array
+    - React.Fragment
+        为了破除 render 最外层必须只能有一个标签的限定, 需要使用这个语法
+        render() {
+          return (
+          <React.Fragment>
+            Some text.
+            <h2>A heading</h2>
+          </React.Fragment>
+          );
+        }
+        或者使用语法糖 <> ... </>
+        Fragment 只能传递 key 属性
+    -->
     <script src="../build/react.js"></script>
+    <!--
+        提供 React Dom 相关的功能
+        有 ReactDOM.render(), hydrate(), unmountComponentAtNode()
+          findDOMNode(), createPortal() 这些顶层方法.
+    -->
     <script src="../build/react-dom.js"></script>
+    <!--
+        babel 的浏览器版本, 提供 jsx 转换与渲染功能
+     -->
     <script src="../build/browser.min.js"></script>
   </head>
   <body>
     <div id="example"></div>
+    <!-- "text/babel" 表明是 JSX 语法 -->
     <script type="text/babel">
 
       var data = 123;
-
+      // react Component
+      // 首字母需大写
       var MyTitle = React.createClass({
+        // 提供类型检查, 这是旧版本的方法
+        // 新版本使用 prop-types 库
+        // import PropTypes from 'prop-types';
+        // MyComponent.propTypes = {...}
         propTypes: {
           title: React.PropTypes.string.isRequired,
         },
-
+        // 设置属性的默认值
+        getDefaultProps : function () {
+          return {
+            title : 'Hello World'
+          };
+        },
+        // render 方法返回一个组件类的实例
         render: function() {
           return <h1> {this.props.title} </h1>;
         }
       });
 
+      // 将 jsx 转化为 html 并渲染
       ReactDOM.render(
+        // 生成一个 MyTitle 组件的实例
         <MyTitle title={data} />,
         document.getElementById('example')
       );
@@ -29,4 +104,3 @@
     </script>
   </body>
 </html>
-

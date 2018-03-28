@@ -8,17 +8,40 @@
   <body>
     <div id="example"></div>
     <script type="text/babel">
+      // 创建 hello 组件类
       var Hello = React.createClass({
+        // 初始化 this.state, 在 mount 之前执行
         getInitialState: function () {
           return {
             opacity: 1.0
           };
         },
 
+        // react 的生命周期函数
+        // 1. Mounting(插入 DOM)
+        //     componentWillMount
+        //         挂载之前, 还未进行初次渲染,
+        //         通常用来添加 listeners,
+        //         this.setState 还不可用
+        //     componentDidMount
+        //         挂载之后, 初次渲染结束, 可以使用 this.getDOMNode() 方法
+        // 2. Updating(重新渲染)
+        //     componentWillReceiveProps
+        //         接受到新的 props 和 state 之前触发
+        //     shouldComponentUpdate
+        //         接收到 props 和 state 后触发, 判断组件是否需要更新
+        //     componentWillUpdate
+        //         即将更新, 接受到了新的 props 和 state, 还没有渲染
+        //     componentDidUpdate
+        //         更新结束, 此时更新已经在 DOM 中体现了, 初次渲染时不会触发
+        // 3. Unmounting(从 DOM 中删除)
+        //     componentWillUnmount
+        //         组件从 DOM 移除之前, 通常在此时移除 listeners
         componentDidMount: function () {
+          // 此处使用箭头函数可避免 bind this, 方便很多
           this.timer = setInterval(function () {
             var opacity = this.state.opacity;
-            opacity -= .05;
+            opacity -= 0.05;
             if (opacity < 0.1) {
               opacity = 1.0;
             }
@@ -30,7 +53,8 @@
 
         render: function () {
           return (
-            <div style={{opacity: this.state.opacity}}>
+            let style = {opacity: this.state.opacity}
+            <div style={style}>
               Hello {this.props.name}
             </div>
           );

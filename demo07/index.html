@@ -1,28 +1,98 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!--
+    react 的核心功能
+    React.Component
+        用来继承的 React 的基类
+    React.PureComponent
+        基本与 Component 相同, 在热加载方面有一定的区别,
+        某些情况下会执行 shouldComponentUpdate 方法
+    React.createElement
+        创建一个 reactElement, 会被 jsx 语法糖包起来
+    React.cloneElement
+        浅拷贝一个 reactElement
+    React.createFactory
+        生成一个指定类型的 reactElement, 会被 jsx 语法糖包起来
+    React.isValidElement
+        判断是否是合法的 reactElement
+    React.Children
+        为了解决垃圾设计(this.props.children)的垃圾方法,
+        React.Children.map(children, function[(thisArg)])
+            返回一个迭代后的新数组
+        React.Children.forEach(children, function[(thisArg)])
+            只对原数组进行迭代, 不返回
+        React.Children.count(children)
+            返回子节点的数量
+        React.Children.only(children)
+            判断是否只有一个子节点
+        React.Children.toArray(children)
+            将 children 转化为一个 flatten Array
+        React.Fragment
+            用来消除 render 最外层只能有一个顶层标签的限制而添加的语法
+            只能传 key 属性
+            可简写为 <></>
+    -->
     <script src="../build/react.js"></script>
+    <!--
+    提供 DOM 相关的操作
+    ReactDOM.render(element, container[, callback])
+        渲染一个 reactElement 到指定的 container 里
+        并在渲染完成后执行 callback
+        返回值是该 component 的引用
+
+    ReactDOM.hydrate(element, container[, callback])
+        功能和 render 函数大致相同, 用在 server 端
+
+    ReactDOM.unmountComponentAtNode(container)
+        从 container 移除挂载的 component, 移除成功返回 true, 没有挂载的 component 时返回 false
+
+    ReactDOM.findDOMNode(component)
+        返回该 component 的原生 dom 节点(html)表示
+
+    ReactDOM.createPortal(child, container)
+        该方法提供了在 DOM 节点之外添加 child 的方法
+    -->
     <script src="../build/react-dom.js"></script>
+    <!--
+    babel 的浏览器版本, 提供了将 jsx 转化为 html 的功能, 这一步很耗时
+    -->
     <script src="../build/browser.min.js"></script>
   </head>
   <body>
     <div id="example"></div>
+    <!-- type="text/babel" 表明这是 jsx 语法 -->
     <script type="text/babel">
+// 创建一个 react component
+// 首字母须大写
 var MyComponent = React.createClass({
   handleClick: function() {
     this.refs.myTextInput.focus();
   },
+  // 每个组件类都必须有一个 render 方法输出组件类的实例
   render: function() {
     return (
+      // 组件并不是真实的 DOM 节点, 而是存在于内存中的一种数据结构,
+      // 又称 Virtual DOM
+      // 只有在它插入文档之后, 才会变成真实的 DOM
+      // React 中的 DOM 改变会先在 Virtual DOM 里发生, 再将变化的部分反映在真实 DOM 里, 这种算法叫做 DOM Diff, 可以极大地提升网页的性能
       <div>
+        // 为了获取用户输入, 必须获取真实的 DOM 节点
+        // 为了能够获取到目标节点, 必须在目标标签里添加 ref 属性
+        // 在 component 里可通过 this.ref.<refName> 来获取到对应的标签
+        // 必须在虚拟节点插入真实的 DOM 之后才可以获取到
         <input type="text" ref="myTextInput" />
+        // onClick 监听鼠标点击事件
+        // 通过时间监听的回调函数保证是在真实 DOM 中发生, 可以获取到 ref
         <input type="button" value="Focus the text input" onClick={this.handleClick} />
       </div>
     );
   }
 });
 
+// 该方法将 JSX 转化为 HTML 并渲染
 ReactDOM.render(
+  // 生成一个 MyComponent 组件的实例
   <MyComponent />,
   document.getElementById('example')
 );
